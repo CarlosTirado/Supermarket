@@ -2,6 +2,7 @@ import vueRouter from 'vue-router'
 import App from './App'
 import User from './components/User'
 import Categories from './components/Categories'
+import Login from './components/Login'
 
 const router = new vueRouter({
         mode: 'history',
@@ -11,6 +12,11 @@ const router = new vueRouter({
                 path: '/',
                 name: "root",
                 component: App
+            },
+            {
+                path: '/login',
+                name: "login",
+                component: Login
             },
             {
                 path: '/user/:username',

@@ -4,6 +4,7 @@
 
       <h1>Supermarket</h1>
       <nav>
+        <button v-on:click="login" v-if="is_auth">Login</button>
         <button v-on:click="init" v-if="is_auth">Inicio</button>
         <button v-on:click="categories" v-if="is_auth">Categorías</button>
         <button v-if="is_auth">Productos</button>
@@ -40,6 +41,12 @@
         }
       },
 
+      login: function(){
+        if(this.$route.name != "login"){
+          this.$router.push({name: "login"})
+        }
+      },
+
       categories: function(){
         if(this.$route.name != "categories"){
           let username = localStorage.getItem("current_username")
@@ -53,7 +60,7 @@
       localStorage.setItem('current_username', 'Samir_Carlos')
       localStorage.setItem('isAuth', true)
 
-      this.$router.push({name: "user", params:{ username: 'Samir_Carlos'}})
+      this.$router.push({name: "login"})
     }
   }
 </script>
