@@ -6,6 +6,10 @@
             <input name='categoria_name' type='text 'v-model="categoriaInput.name" placeholder='Nombre'>
             <input name='categoria_description' type='text' v-model="categoriaInput.description" placeholder="Descripción">
             <button v-on:click="postCategory">Guardar</button>
+            <br/>
+            <label>{{mensaje}}</label>
+            <br/>
+            <br/>
         </div>
         <label for='CategoriaId'>Categoria Id</label>
         <input name='CategoriaId' type='number'v-model="categoriaId" placeholder='Digite un Id Valido'>
@@ -68,7 +72,7 @@
                 this.username = this.$route.params.username
                 let self = this
                 console.log(self.categoriaInput);
-                axios.post(`http://localhost:4000/categories`, self.categoriaInput)
+                axios.post(`http://localhost:4000/categories/`, self.categoriaInput)
                     .then((result) => {
                         console.log(result);
                         self.mensaje = "Categoria Registrada Correctamente";
