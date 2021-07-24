@@ -20,20 +20,31 @@ import {
 
 import productResolvers from './supermarket/products/resolvers';
 
+import {
+	userMutations,
+	userQueries,
+	userTypeDef
+} from './users/user/typeDefs';
+
+import userResolvers from './users/user/resolvers';
+
 // merge the typeDefs
 const mergedTypeDefs = mergeSchemas(
 	[
 		'scalar JSON',
 		categoryTypeDef,
-		productTypeDef
+		productTypeDef,
+		userTypeDef
 	],
 	[
 		categoryQueries,
-		productQueries
+		productQueries,
+		userQueries
 	],
 	[
 		categoryMutations,
-		productMutations
+		productMutations,
+		userMutations
 	]
 );
 
@@ -43,6 +54,7 @@ export default makeExecutableSchema({
 	resolvers: merge(
 		{ JSON: GraphQLJSON }, // allows scalar JSON
 		categoryResolvers,
-		productResolvers
+		productResolvers,
+		userResolvers
 	)
 });
