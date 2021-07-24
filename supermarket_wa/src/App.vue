@@ -59,8 +59,9 @@
     beforeCreate: function(){
       localStorage.setItem('current_username', 'Samir_Carlos')
       localStorage.setItem('isAuth', true)
-
-      this.$router.push({name: "login"})
+      if(this.$route.name != "login"){
+        this.$router.push({name: "login"})
+      }
     }
   }
 </script>

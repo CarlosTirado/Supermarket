@@ -109,7 +109,6 @@ export default {
   },
 
   created: function () {
-    this.username = this.$route.params.username;
     let self = this;
   },
 
@@ -124,17 +123,30 @@ export default {
     },
 
     getUser: function () {
-      this.username = this.$route.params.username;
       let self = this;
 
       axios
-        .post(`http://localhost/user/`,{
-			//graph
+        .post(`http://localhost:5000/graphql?`,{
+			query: ` 
+				query ($username:String!, $password:String!){
+					userByUsernameAndPassword(username: $username, password: $password){
+						id,
+						username
+					}
+				}
+			`,
+			variables: {
+				username: self.username,
+				password: self.password
+			}
 		})
         .then((result) => {
          	console.log(result);
-			let username = localStorage.getItem("current_username")
-          	this.$router.push({name: "user", params:{ username: username }})
+			let data = result.data;
+			if(!data) return;
+			
+			//let username = localStorage.getItem("current_username")
+          	//this.$router.push({name: "user", params:{ username: username }})
         })
         .catch((error) => {
           console.log(error);
