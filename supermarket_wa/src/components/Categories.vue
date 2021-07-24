@@ -1,5 +1,6 @@
 <template>
   <div id="Categories">
+    <h2>Usuario autenticado: <span>{{ username }}</span></h2>
     <div class="row">
       <div class="col-sm-12" style="padding: 20px">
         <div class="card">
@@ -28,7 +29,7 @@
                     </tr>
                   </thead>
                   <tbody id="table-categorias-body">
-                    <tr v-for="categoria in categorias">
+                    <tr v-for="categoria in categorias" v-bind:key="categoria.id">
                       <td>{{ categoria.id }}</td>
                       <td>{{ categoria.name }}</td>
                       <td>{{ categoria.description }}</td>
@@ -36,16 +37,15 @@
                         <button
                           type="button"
                           class="btn btn-success"
-                          v-on:click="getCategoria(categoria.id)"
-                        >
+                          v-on:click="getCategoria(categoria.id)">
                           Ver
                         </button>
                         <button type="button" class="btn btn-success"
                           v-on:click="abrirUpdateCategoria(categoria)">
                           Editar
                         </button>
-                        <button type="button" class="btn btn-success"
-                          v-on:click="deleteCategory(categoria.id)">
+                        <button type="button" class="btn btn-danger"
+                            v-on:click="deleteCategoria(categoria.id)">
                           Eliminar
                         </button>
                       </td>
@@ -130,6 +130,7 @@
                 </div>
                 <div class="col-sm-6">
                   <input
+                    autocomplete="off"
                     name="categoria_name"
                     type="text "
                     v-model="categoriaInput.name"
@@ -144,6 +145,7 @@
                 </div>
                 <div class="col-sm-6">
                   <input
+                    autocomplete="off"
                     name="categoria_description"
                     type="text "
                     v-model="categoriaInput.description"
@@ -158,7 +160,7 @@
             <button
               type="button"
               class="btn btn-success"
-              v-on:click="postCategory"
+              v-on:click="postCategoria"
               data-bs-dismiss="modal"
             >
               Guardar
@@ -194,6 +196,7 @@
                 </div>
                 <div class="col-sm-6">
                   <input
+                    autocomplete="off"
                     name="categoria_name"
                     type="text "
                     v-model="categoriaUpdate.name"
@@ -208,6 +211,7 @@
                 </div>
                 <div class="col-sm-6">
                   <input
+                    autocomplete="off"
                     name="categoria_description"
                     type="text "
                     v-model="categoriaUpdate.description"
@@ -222,7 +226,7 @@
             <button
               type="button"
               class="btn btn-success"
-              v-on:click="updateCategory"
+              v-on:click="updateCategoria"
               data-bs-dismiss="modal"
             >
               Guardar
@@ -318,7 +322,7 @@ export default {
       modalVerCategoria.show();
     },
 
-    postCategory: function () {
+    postCategoria: function () {
       this.username = this.$route.params.username;
       let self = this;
       console.log(self.categoriaInput);
@@ -334,7 +338,7 @@ export default {
           alert("ERROR de Servidor");
         });
     },
-    updateCategory: function () {
+    updateCategoria: function () {
       let self = this;
       console.log(self.categoriaUpdate);
       axios
@@ -349,12 +353,13 @@ export default {
           alert("ERROR de Servidor");
         });
     },
-    deleteCategory: function (categoriaId) {
+    deleteCategoria: function (categoriaId) {
       let self = this;
+
       axios
-        .delete(`http://localhost:4000/categories/${categoriaId}`, null)
+        .delete(`http://localhost:4000/categories/${categoriaId}`)
         .then((result) => {
-          alert("Categoria Eliminada Correctamente");
+          self.mensaje = "Categoria Eliminada Correctamente";
           self.getCategorias();
         })
         .catch((error) => {
@@ -362,7 +367,7 @@ export default {
           console.log(typeof error);
           alert("ERROR de Servidor");
         });
-    }
+    },
   },
 };
 </script>
