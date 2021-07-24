@@ -10,7 +10,7 @@ export const userTypeDef = `
 	}`;
 
 export const userQueries = `
-	userByUsernameAndPassword(username: String!, password: String!): User!
+	userByUsernameAndPassword(username: String!, password: String!): [User]!
 `;
 
 export const userMutations = `

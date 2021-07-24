@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    
+
 	<div id="modalRegistroUsuario" class="modal" tabindex="-1">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -127,11 +127,11 @@ export default {
 
       axios
         .post(`http://localhost/graphql?`,{
-			query: ` 
+			query: `
 				query ($username:String!, $password:String!){
 					userByUsernameAndPassword(username: $username, password: $password){
 						id,
-						username
+						user
 					}
 				}
 			`,
@@ -143,8 +143,10 @@ export default {
         .then((result) => {
          	console.log(result);
 			let data = result.data;
-			if(!data) return;
-			
+
+      if(!data || data.data.userByUsernameAndPassword.length == 0) alert("Credenciales invalidas");
+      else alert("Login exitoso");
+
 			//let username = localStorage.getItem("current_username")
           	//this.$router.push({name: "user", params:{ username: username }})
         })
@@ -158,7 +160,7 @@ export default {
     postUser: function () {
       this.username = this.$route.params.username;
       let self = this;
-      
+
 	  axios
         .post(`http://localhost/user/`, {
 			//grapql
