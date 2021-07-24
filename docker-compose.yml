@@ -29,6 +29,12 @@ services:
     depends_on:
       - "supermarket-api"
     image: carlostirado/supermarket_proxy
+  supermarket-wa:
+      ports:
+        - 8080:8080
+      depends_on:
+        - "supermarket-ms"
+      image: carlostirado/supermarket_wa
   phpmyadmin:
     image: phpmyadmin
     ports:
