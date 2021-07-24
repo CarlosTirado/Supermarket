@@ -1,11 +1,11 @@
 export const userTypeDef = `
 	type User {
 		id: Int!
-		username: String!
+		user: String!
 		password: String!
 	}
 	input UserInput {
-		username: String!
+		user: String!
 		password: String!
 	}`;
 
