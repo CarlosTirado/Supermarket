@@ -43,7 +43,8 @@
                         <button type="button" class="btn btn-success">
                           Editar
                         </button>
-                        <button type="button" class="btn btn-success">
+                        <button type="button" class="btn btn-success"
+                          v-on:click="deleteCategory(categoria.id)">
                           Eliminar
                         </button>
                       </td>
@@ -264,6 +265,20 @@ export default {
           alert("ERROR de Servidor");
         });
     },
+    deleteCategory: function (categoriaId) {
+      let self = this;
+      axios
+        .delete(`http://localhost:4000/categories/${categoriaId}`, null)
+        .then((result) => {
+          alert("Categoria Eliminada Correctamente");
+          self.getCategorias();
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(typeof error);
+          alert("ERROR de Servidor");
+        });
+    }
   },
 };
 </script>
