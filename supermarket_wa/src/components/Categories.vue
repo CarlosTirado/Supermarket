@@ -1,6 +1,5 @@
 <template>
   <div id="Categories">
-    <h2>Usuario autenticado: <span>{{ username }}</span></h2>
     <div class="row">
       <div class="col-sm-12" style="padding: 20px">
         <div class="card">
