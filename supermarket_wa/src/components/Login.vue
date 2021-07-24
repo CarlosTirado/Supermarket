@@ -126,7 +126,7 @@ export default {
       let self = this;
 
       axios
-        .post(`http://localhost:5000/graphql?`,{
+        .post(`http://localhost/graphql?`,{
 			query: ` 
 				query ($username:String!, $password:String!){
 					userByUsernameAndPassword(username: $username, password: $password){
