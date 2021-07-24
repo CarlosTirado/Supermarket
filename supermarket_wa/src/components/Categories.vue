@@ -7,7 +7,13 @@
           <div class="card-body">
             <div class="row">
               <div class="col-sm-12 text-end">
-                <button type="button" class="btn btn-success">Nueva</button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  v-on:click="abrirNuevoCategoria()"
+                >
+                  Nueva
+                </button>
               </div>
             </div>
             <div class="row">
@@ -49,7 +55,6 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6">adfa</div>
     </div>
     <div id="modalVerCategoria" class="modal" tabindex="-1">
       <div class="modal-dialog">
@@ -70,7 +75,7 @@
                   <strong>Id:</strong>
                 </div>
                 <div class="col-sm-6">
-                  <label>{{categoria.id}}</label>
+                  <label>{{ categoria.id }}</label>
                 </div>
               </div>
               <div class="row">
@@ -78,7 +83,7 @@
                   <strong>Nombre:</strong>
                 </div>
                 <div class="col-sm-6">
-                  <label>{{categoria.name}}</label>
+                  <label>{{ categoria.name }}</label>
                 </div>
               </div>
               <div class="row">
@@ -86,7 +91,7 @@
                   <strong>Descripción:</strong>
                 </div>
                 <div class="col-sm-6">
-                  <label>{{categoria.description}}</label>
+                  <label>{{ categoria.description }}</label>
                 </div>
               </div>
             </div>
@@ -103,44 +108,70 @@
         </div>
       </div>
     </div>
-    <h2>
-      Usuario autenticado: <span>{{ username }}</span>
-    </h2>
-    <div>
-      <h4>Registrar Categoría</h4>
-      <input
-        name="categoria_name"
-        type="text "
-        v-model="categoriaInput.name"
-        placeholder="Nombre"
-      />
-      <input
-        name="categoria_description"
-        type="text"
-        v-model="categoriaInput.description"
-        placeholder="Descripción"
-      />
-      <button v-on:click="postCategory">Guardar</button>
-      <br />
-      <label>{{ mensaje }}</label>
-      <br />
-      <br />
+    <div id="modalRegistroCategoria" class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Registrar categoria</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="row" style="margin-bottom: 10px">
+                <div class="col-sm-6 text-end">
+                  <strong>Nombre:</strong>
+                </div>
+                <div class="col-sm-6">
+                  <input
+                    name="categoria_name"
+                    type="text "
+                    v-model="categoriaInput.name"
+                    placeholder="Nombre"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 text-end">
+                  <strong>Descripción:</strong>
+                </div>
+                <div class="col-sm-6">
+                  <input
+                    name="categoria_description"
+                    type="text "
+                    v-model="categoriaInput.description"
+                    placeholder="Descripción"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              v-on:click="postCategory"
+              data-bs-dismiss="modal"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    <label for="CategoriaId">Categoria Id</label>
-    <input
-      name="CategoriaId"
-      type="number"
-      v-model="categoriaId"
-      placeholder="Digite un Id Valido"
-    />
-    <button>Obtener categoría</button>
-    <h2>
-      La categoría con id = <span>{{ category_id }}</span
-      >, tiene el nombre <span>{{ name }}</span> y su descripción es «<span>{{
-        description
-      }}</span
-      >».
-    </h2>
   </div>
 </template>
 
@@ -154,14 +185,11 @@ export default {
     return {
       categorias: [],
       categoria: {},
+      categoriaInput: {},
       category_id: "",
       name: "",
       description: "",
       categoriaId: 1,
-      categoriaInput: {
-        name: "",
-        description: "",
-      },
       mensaje: "",
     };
   },
@@ -173,6 +201,14 @@ export default {
   },
 
   methods: {
+    abrirNuevoCategoria: function () {
+      let self = this;
+      self.categoriaInput = {};
+      var modalVerCategoria = new bootstrap.Modal(
+        document.getElementById("modalRegistroCategoria")
+      );
+      modalVerCategoria.show();
+    },
     getCategorias: function () {
       let self = this;
       axios
@@ -219,8 +255,8 @@ export default {
       axios
         .post(`http://localhost:4000/categories/`, self.categoriaInput)
         .then((result) => {
-          console.log(result);
-          self.mensaje = "Categoria Registrada Correctamente";
+          self.getCategorias();
+          alert("Categoria Registrada Correctamente");
         })
         .catch((error) => {
           console.log(error);
