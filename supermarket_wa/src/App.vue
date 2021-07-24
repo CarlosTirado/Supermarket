@@ -50,10 +50,10 @@
     },
 
     beforeCreate: function(){
-      localStorage.setItem('current_username', 'Carlos Tirado y Samir Miranda')
+      localStorage.setItem('current_username', 'Samir_Carlos')
       localStorage.setItem('isAuth', true)
 
-      this.$router.push({name: "user", params:{ username: 'Carlos Tirado y Samir Miranda'}})
+      this.$router.push({name: "user", params:{ username: 'Samir_Carlos'}})
     }
   }
 </script>
@@ -103,7 +103,7 @@
     border: 1px solid #E5E7E9;
   }
   .main-component{
-    height: 75vh;
+    min-height: 75vh;
     margin: 0%;
     padding: 0%;
     background: #FDFEFE ;

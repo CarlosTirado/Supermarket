@@ -1,5 +1,6 @@
 <template>
   <div id="Categories">
+    <h2>Usuario autenticado: <span>{{ username }}</span></h2>
     <div class="row">
       <div class="col-sm-12" style="padding: 20px">
         <div class="card">
@@ -22,7 +23,7 @@
                     </tr>
                   </thead>
                   <tbody id="table-categorias-body">
-                    <tr v-for="categoria in categorias">
+                    <tr v-for="categoria in categorias" v-bind:key="categoria.id">
                       <td>{{ categoria.id }}</td>
                       <td>{{ categoria.name }}</td>
                       <td>{{ categoria.description }}</td>
@@ -30,14 +31,14 @@
                         <button
                           type="button"
                           class="btn btn-success"
-                          v-on:click="getCategoria(categoria.id)"
-                        >
+                          v-on:click="getCategoria(categoria.id)">
                           Ver
                         </button>
                         <button type="button" class="btn btn-success">
                           Editar
                         </button>
-                        <button type="button" class="btn btn-success">
+                        <button type="button" class="btn btn-danger"
+                            v-on:click="deleteCategoria(categoria.id)">
                           Eliminar
                         </button>
                       </td>
@@ -49,7 +50,6 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6">adfa</div>
     </div>
     <div id="modalVerCategoria" class="modal" tabindex="-1">
       <div class="modal-dialog">
@@ -103,24 +103,29 @@
         </div>
       </div>
     </div>
-    <h2>
-      Usuario autenticado: <span>{{ username }}</span>
-    </h2>
+    
     <div>
       <h4>Registrar Categoría</h4>
-      <input
-        name="categoria_name"
-        type="text "
-        v-model="categoriaInput.name"
-        placeholder="Nombre"
-      />
-      <input
-        name="categoria_description"
-        type="text"
-        v-model="categoriaInput.description"
-        placeholder="Descripción"
-      />
-      <button v-on:click="postCategory">Guardar</button>
+      <div>
+          <label class="form-label" for="categoria_name">Nombre</label>
+        <input
+            class="form-control"
+            name="categoria_name"
+            type="text "
+            v-model="categoriaInput.name"
+            placeholder="Nombre"/>
+      </div>
+      <div>
+        <label class="form-label" for="categoria_description">Descripción</label>
+        <textarea
+            class="form-control"
+            name="categoria_description"
+            type="text"
+            v-model="categoriaInput.description"
+            placeholder="Descripción">
+        </textarea>
+      </div>
+      <button class="btn btn-primary btn-block" v-on:click="postCategory">Guardar</button>
       <br />
       <label>{{ mensaje }}</label>
       <br />
@@ -221,6 +226,23 @@ export default {
         .then((result) => {
           console.log(result);
           self.mensaje = "Categoria Registrada Correctamente";
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(typeof error);
+          alert("ERROR de Servidor");
+        });
+    },
+
+    deleteCategoria: function (categoriaId) {
+      this.username = this.$route.params.username;
+      let self = this;
+
+      axios
+        .delete(`http://localhost:4000/categories/${categoriaId}`)
+        .then((result) => {
+          self.mensaje = "Categoria Eliminada Correctamente";
+          self.getCategorias();
         })
         .catch((error) => {
           console.log(error);
