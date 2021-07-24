@@ -40,7 +40,8 @@
                         >
                           Ver
                         </button>
-                        <button type="button" class="btn btn-success">
+                        <button type="button" class="btn btn-success"
+                          v-on:click="abrirUpdateCategoria(categoria)">
                           Editar
                         </button>
                         <button type="button" class="btn btn-success"
@@ -173,6 +174,70 @@
         </div>
       </div>
     </div>
+    <div id="modalEditarCategoria" class="modal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar categoria</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="row" style="margin-bottom: 10px">
+                <div class="col-sm-6 text-end">
+                  <strong>Nombre:</strong>
+                </div>
+                <div class="col-sm-6">
+                  <input
+                    name="categoria_name"
+                    type="text "
+                    v-model="categoriaUpdate.name"
+                    placeholder="Nombre"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 text-end">
+                  <strong>Descripción:</strong>
+                </div>
+                <div class="col-sm-6">
+                  <input
+                    name="categoria_description"
+                    type="text "
+                    v-model="categoriaUpdate.description"
+                    placeholder="Descripción"
+                    class="form-control"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              v-on:click="updateCategory"
+              data-bs-dismiss="modal"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -187,11 +252,7 @@ export default {
       categorias: [],
       categoria: {},
       categoriaInput: {},
-      category_id: "",
-      name: "",
-      description: "",
-      categoriaId: 1,
-      mensaje: "",
+      categoriaUpdate: {}
     };
   },
 
@@ -207,6 +268,14 @@ export default {
       self.categoriaInput = {};
       var modalVerCategoria = new bootstrap.Modal(
         document.getElementById("modalRegistroCategoria")
+      );
+      modalVerCategoria.show();
+    },
+    abrirUpdateCategoria: function (categoria) {
+      let self = this;
+      self.categoriaUpdate = categoria;
+      var modalVerCategoria = new bootstrap.Modal(
+        document.getElementById("modalEditarCategoria")
       );
       modalVerCategoria.show();
     },
@@ -258,6 +327,21 @@ export default {
         .then((result) => {
           self.getCategorias();
           alert("Categoria Registrada Correctamente");
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(typeof error);
+          alert("ERROR de Servidor");
+        });
+    },
+    updateCategory: function () {
+      let self = this;
+      console.log(self.categoriaUpdate);
+      axios
+        .put(`http://localhost:4000/categories/${self.categoriaUpdate.id}`, self.categoriaUpdate)
+        .then((result) => {
+          self.getCategorias();
+          alert("Categoria Actualizada Correctamente");
         })
         .catch((error) => {
           console.log(error);
